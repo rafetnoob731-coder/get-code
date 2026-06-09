@@ -1,5 +1,5 @@
 const ADMIN_KEY = 'admin_secret_key_2024';
-const API_BASE = '';
+const API_BASE = '/api';
 const SHORTLINK = 'https://example.com/shortlink';
 const CODE_DURATION = 120;
 
@@ -64,7 +64,7 @@ function handleGetCode() {
       }
       currentSession = data.session;
       currentToken = data.token;
-      const callback = encodeURIComponent(`${window.location.origin}/callback?sid=${data.session}`);
+      const callback = encodeURIComponent(`${window.location.origin}/api/callback?sid=${data.session}`);
       window.location.href = `${shortlinkBase}?sid=${data.session}&callback=${callback}`;
     })
     .catch(() => {
