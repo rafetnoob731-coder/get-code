@@ -2,21 +2,27 @@ const crypto = require('crypto');
 const fs = require('fs');
 const path = require('path');
 
-const DB_PATH = path.join(process.cwd(), 'data.json');
+const DB_PATH = '/tmp/data.json';
+
+let memCache = null;
 
 function loadDB() {
   try {
     if (fs.existsSync(DB_PATH)) {
-      return JSON.parse(fs.readFileSync(DB_PATH, 'utf8'));
+      memCache = JSON.parse(fs.readFileSync(DB_PATH, 'utf8'));
+      return memCache;
     }
-  } catch {}
-  return { users: [], sessions: [], codes: [], logs: [], securityLogs: [], rateLimits: [] };
+    if (memCache) return memCache;
+  } catch (e) { console.error('loadDB error:', e.message); }
+  memCache = { users: [], sessions: [], codes: [], logs: [], securityLogs: [], rateLimits: [] };
+  return memCache;
 }
 
 function saveDB(db) {
+  memCache = db;
   try {
     fs.writeFileSync(DB_PATH, JSON.stringify(db, null, 2));
-  } catch {}
+  } catch (e) { console.error('saveDB error:', e.message); }
 }
 
 function generateToken(len = 32) { return crypto.randomBytes(len).toString('hex'); }
