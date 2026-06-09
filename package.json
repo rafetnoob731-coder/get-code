@@ -1,5 +1,8 @@
 {
   "name": "get-code",
   "version": "1.0.0",
-  "description": "One-Time Code Verification System"
+  "description": "One-Time Code Verification System",
+  "dependencies": {
+    "@vercel/blob": "^2.4.0"
+  }
 }

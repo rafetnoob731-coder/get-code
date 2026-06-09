@@ -1,27 +1,23 @@
 {
   "version": 2,
   "builds": [
-    { "src": "api/get_token.js", "use": "@vercel/node" },
-    { "src": "api/get_code.js", "use": "@vercel/node" },
-    { "src": "api/verify.js", "use": "@vercel/node" },
-    { "src": "api/callback.js", "use": "@vercel/node" },
-    { "src": "api/admin.js", "use": "@vercel/node" },
+    { "src": "api/index.js", "use": "@vercel/node" },
     { "src": "*.html", "use": "@vercel/static" },
     { "src": "css/*.css", "use": "@vercel/static" },
     { "src": "js/*.js", "use": "@vercel/static" }
   ],
   "routes": [
     { "src": "/", "dest": "/index.html" },
-    { "src": "/get_token", "dest": "api/get_token.js" },
-    { "src": "/api/get_token", "dest": "api/get_token.js" },
-    { "src": "/get_code", "dest": "api/get_code.js" },
-    { "src": "/api/get_code", "dest": "api/get_code.js" },
-    { "src": "/verify", "dest": "api/verify.js" },
-    { "src": "/api/verify", "dest": "api/verify.js" },
-    { "src": "/callback", "dest": "api/callback.js" },
-    { "src": "/api/callback", "dest": "api/callback.js" },
-    { "src": "/admin", "dest": "api/admin.js" },
-    { "src": "/api/admin", "dest": "api/admin.js" },
+    { "src": "/get_token", "dest": "api/index.js" },
+    { "src": "/api/get_token", "dest": "api/index.js" },
+    { "src": "/get_code", "dest": "api/index.js" },
+    { "src": "/api/get_code", "dest": "api/index.js" },
+    { "src": "/verify", "dest": "api/index.js" },
+    { "src": "/api/verify", "dest": "api/index.js" },
+    { "src": "/callback", "dest": "api/index.js" },
+    { "src": "/api/callback", "dest": "api/index.js" },
+    { "src": "/admin", "dest": "api/index.js" },
+    { "src": "/api/admin", "dest": "api/index.js" },
     { "src": "/(.*\\.(css|js))", "dest": "/$1" }
   ]
 }
