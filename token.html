@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Token Generator</title>
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family: 'Inter', sans-serif; background:#0a0a0f; color:#e0e0e0; padding:20px; display:flex; align-items:center; justify-content:center; min-height:100vh; }
+    .card { background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.06); border-radius:16px; padding:32px; max-width:400px; width:100%; }
+    h1 { font-size:22px; color:#fff; margin-bottom:8px; }
+    p { font-size:14px; color:rgba(255,255,255,0.5); margin-bottom:20px; }
+    .field { margin-bottom:16px; }
+    label { display:block; font-size:12px; color:rgba(255,255,255,0.4); margin-bottom:4px; text-transform:uppercase; letter-spacing:0.05em; }
+    input { width:100%; padding:10px 14px; background:rgba(0,0,0,0.3); border:1px solid rgba(255,255,255,0.08); border-radius:8px; color:#fff; font-size:14px; font-family:inherit; }
+    input:focus { outline:none; border-color:rgba(0,212,255,0.3); }
+    button { width:100%; padding:12px; background:linear-gradient(135deg,#00d4ff,#0099cc); color:#0a0a0f; border:none; border-radius:10px; font-size:15px; font-weight:600; cursor:pointer; transition:all 0.2s; font-family:inherit; }
+    button:hover { opacity:0.9; }
+    .result { margin-top:20px; padding:16px; background:rgba(0,0,0,0.3); border:1px solid rgba(0,212,255,0.12); border-radius:10px; display:none; word-break:break-all; }
+    .result.show { display:block; }
+    .result .label { font-size:11px; color:rgba(255,255,255,0.3); text-transform:uppercase; letter-spacing:0.05em; margin-bottom:4px; }
+    .result .value { font-size:16px; color:#00d4ff; font-weight:600; }
+    .result .value-session { font-size:13px; color:rgba(255,255,255,0.6); }
+    .error { color:#ff6b6b; font-size:13px; margin-top:12px; display:none; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Token Generator</h1>
+    <p>Create a new verification session</p>
+    <div class="field">
+      <label>Admin Key</label>
+      <input type="password" id="keyInput" value="admin_secret_key_2024">
+    </div>
+    <div class="field">
+      <label>Money Amount</label>
+      <input type="text" id="moneyInput" value="0.05$">
+    </div>
+    <button onclick="generateToken()">Generate Token</button>
+    <div id="error" class="error"></div>
+    <div class="result" id="result">
+      <div class="label">Token</div>
+      <div class="value" id="tokenValue"></div>
+      <div class="label" style="margin-top:12px">Session ID</div>
+      <div class="value-session" id="sessionValue"></div>
+      <div class="label" style="margin-top:12px">Expires In</div>
+      <div class="value-session" id="expiresValue"></div>
+    </div>
+  </div>
+  <script>
+    async function generateToken() {
+      const key = document.getElementById('keyInput').value;
+      const money = document.getElementById('moneyInput').value;
+      const err = document.getElementById('error');
+      const res = document.getElementById('result');
+      err.style.display = 'none';
+      res.classList.remove('show');
+      try {
+        const r = await fetch(`/get_token?key=${encodeURIComponent(key)}&money=${encodeURIComponent(money)}`);
+        const d = await r.json();
+        if (d.success) {
+          document.getElementById('tokenValue').textContent = d.token;
+          document.getElementById('sessionValue').textContent = d.session;
+          document.getElementById('expiresValue').textContent = d.expires_in + ' seconds';
+          res.classList.add('show');
+        } else {
+          err.textContent = d.error || 'Failed to generate token';
+          err.style.display = 'block';
+        }
+      } catch(e) {
+        err.textContent = 'Connection error';
+        err.style.display = 'block';
+      }
+    }
+  </script>
+</body>
+</html>

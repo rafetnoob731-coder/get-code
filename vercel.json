@@ -1,0 +1,17 @@
+{
+  "version": 2,
+  "builds": [
+    { "src": "api/get_token.js", "use": "@vercel/node" },
+    { "src": "api/get_code.js", "use": "@vercel/node" },
+    { "src": "api/verify.js", "use": "@vercel/node" },
+    { "src": "api/callback.js", "use": "@vercel/node" },
+    { "src": "api/admin.js", "use": "@vercel/node" }
+  ],
+  "routes": [
+    { "src": "/get_token", "dest": "api/get_token.js" },
+    { "src": "/get_code", "dest": "api/get_code.js" },
+    { "src": "/verify", "dest": "api/verify.js" },
+    { "src": "/callback", "dest": "api/callback.js" },
+    { "src": "/admin", "dest": "api/admin.js" }
+  ]
+}
